@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黔茶之涧 - 贵州茶叶交易所大宗现货交易平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        :root {
+            --main-green: #0F6848; /* 主绿-商务稳重 */
+            --gold: #D4AF37; /* 金色-高端 */
+            --gray: #333333; /* 深灰-正文 */
+            --light-gray: #F5F5F5; /* 浅灰-背景 */
+            --white: #FFFFFF; /* 白色-底色 */
+        }
+        body {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* 导航栏 */
+        .header {
+            background: var(--main-green);
+            color: var(--white);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--gold);
+        }
+        .nav a {
+            margin: 0 15px;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        .nav a:hover {
+            color: var(--gold);
+        }
+        .tel {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        /* 轮播/首屏 */
+        .banner {
+            height: 600px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://img0.baidu.com/it/u=2896212232,3829332199&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500") no-repeat center center;
+            background-size: cover;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            margin-top: 70px;
+            text-align: center;
+        }
+        .banner-text h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
+        .banner-text p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--gold);
+            color: var(--gray);
+            font-weight: bold;
+            border-radius: 4px;
+            margin: 0 10px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #b8860b;
+        }
+        /* 通用板块样式 */
+        .section {
+            padding: 80px 0;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 32px;
+            color: var(--main-green);
+            position: relative;
+        }
+        .section-title::after {
+            content: "";
+            width: 80px;
+            height: 3px;
+            background: var(--gold);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .bg-light {
+            background: var(--light-gray);
+        }
+        /* 平台简介 */
+        .intro {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .intro-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        .intro-text p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .intro-img {
+            flex: 1;
+            min-width: 300px;
+        }
+        .intro-img img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        /* 核心优势 */
+        .advantage-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .advantage-item {
+            background: var(--white);
+            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .advantage-item h3 {
+            color: var(--main-green);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        /* 资质展示 */
+        .qualification-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .qualification-item {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .qualification-item h3 {
+            color: var(--main-green);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .qualification-item p {
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        /* 产品中心 */
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        .product-item {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .product-item img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .product-item h3 {
+            color: var(--main-green);
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .product-item .tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: var(--gold);
+            color: var(--white);
+            font-size: 14px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        /* 大宗现货招商 */
+        .invest {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .invest-item {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .invest-item h3 {
+            color: var(--main-green);
+            margin-bottom: 20px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .invest-item h3::before {
+            content: "";
+            width: 4px;
+            height: 20px;
+            background: var(--gold);
+        }
+        .invest-item ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .invest-item li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .invest-item li::before {
+            content: "✓";
+            color: var(--gold);
+            font-weight: bold;
+        }
+        .invest-process {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .process-step {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+        .process-step .num {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background: var(--main-green);
+            color: var(--white);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            font-weight: bold;
+        }
+        /* 合作单位 */
+        .partner-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        .partner-item {
+            padding: 30px 20px;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .partner-item h3 {
+            color: var(--main-green);
+            margin-bottom: 15px;
+        }
+        /* 联系我们 */
+        .contact {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-info {
+            text-align: center;
+            max-width: 600px;
+        }
+        .contact-info p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .qrcode-box {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .qrcode-box img {
+            width: 200px;
+            height: 200px;
+            border-radius: 8px;
+        }
+        .qrcode-box p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--main-green);
+        }
+        /* 底部 */
+        .footer {
+            background: var(--main-green);
+            color: var(--white);
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .footer .copyright {
+            font-size: 12px;
+            color: #ccc;
+        }
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .banner {
+                height: 400px;
+            }
+            .banner-text h1 {
+                font-size: 28px;
+            }
+            .banner-text p {
+                font-size: 16px;
+            }
+            .section-title {
+                font-size: 26px;
+            }
+            .btn {
+                padding: 10px 20px;
+                margin-bottom: 10px;
+            }
+            .invest-item ul {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">黔茶之涧</div>
+            <nav class="nav">
+                <a href="#intro">平台简介</a>
+                <a href="#qualification">资质展示</a>
+                <a href="#product">产品中心</a>
+                <a href="#invest">大宗招商</a>
+                <a href="#partner">合作单位</a>
+                <a href="#contact">联系我们</a>
+            </nav>
+            <div class="tel">全国招商热线：<span style="color: var(--gold);">13556457842</span></div>
+        </div>
+    </header>
+
+    <!-- 首屏轮播区 -->
+    <section class="banner">
+        <div class="container banner-text">
+            <h1>黔茶之涧 · 贵州茶叶交易所大宗现货交易平台</h1>
+            <p>政策置顶 | 长久稳定 | 走势温和 | 交易量大 黔红茶·黔绿茶 现货挂牌·全国诚招机构合作</p>
+            <a href="#invest" class="btn">机构入驻</a>
+            <a href="#contact" class="btn">渠道合作</a>
+        </div>
+    </section>
+
+    <!-- 平台简介 -->
+    <section class="section" id="intro">
+        <div class="container">
+            <h2 class="section-title">平台简介</h2>
+            <div class="intro">
+                <div class="intro-text">
+                    <p>贵州茶叶交易中心有限公司经贵州省清理规范各类交易场所工作领导小组及贵州省商务厅批准，2022年1月18日注册成立，注册资本5000万元（实缴5000万元），是<span style="color: var(--main-green); font-weight: bold;">省内唯一一家茶资源类交易场所</span>，2022年11月1日正式投入运营。</p>
+                    <p>黔茶之涧依托贵州茶叶交易中心<span style="color: var(--main-green); font-weight: bold;">数字化中心</span>核心资源，有效链接茶农、茶企、茶商、物流及金融机构，整合茶叶现货交易信息流、物流、资金流，打破传统交易模式，专注黔红茶、黔绿茶大宗现货挂牌、电子交易、仓单交收，解决茶叶销售难题，带动茶产业高质量发展。</p>
+                    <p>交易中心设立三大业务中心：销地业务中心、产地业务中心、数字化业务中心，形成完整的茶叶现货交易体系，以服务实体经济为宗旨，严控实物交割为目的。</p>
+                </div>
+                <div class="intro-img"> </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心优势 -->
+    <section class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">核心优势</h2>
+            <div class="advantage-list">
+                <div class="advantage-item">
+                    <h3>合规平台 官方背书</h3>
+                    <p>贵州省商务厅批复运营，省内唯一茶资源类交易场所，合规经营，政策置顶长久稳定。</p>
+                </div>
+                <div class="advantage-item">
+                    <h3>三方监管 资金安全</h3>
+                    <p>九江银行资金存储监管，联交运登记结算中心清算，交易所提供场所，资金流转透明安全。</p>
+                </div>
+                <div class="advantage-item">
+                    <h3>标准现货 仓单交收</h3>
+                    <p>产品符合交易所现货交收标准，标准化仓单、第三方质检，实物交割有保障。</p>
+                </div>
+                <div class="advantage-item">
+                    <h3>产业赋能 交易量大</h3>
+                    <p>整合全国茶产业资源，走势温和交易量大，减少流通环节，降低运营成本，加速资金周转。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 资质展示 -->
+    <section class="section" id="qualification">
+        <div class="container">
+            <h2 class="section-title">资质展示</h2>
+            <div class="qualification-list">
+                <div class="qualification-item">
+                    <h3>工商正规资质</h3>
+                    <p>国家企业信用信息公示系统官方收录，登记状态存续，统一社会信用代码91520323MA7F5U4F0L，注册资本5000万元实缴到位。</p>
+                </div>
+                <div class="qualification-item">
+                    <h3>商务厅运营批复</h3>
+                    <p>黔商发(2022)24号文件，省商务厅正式批复同意投入运营，严格遵守国发(2011)38号等相关规定，合规开展交易。</p>
+                </div>
+                <div class="qualification-item">
+                    <h3>业务中心设立批复</h3>
+                    <p>黔商函2023343号文件，省商务厅批复设立三大业务中心，明确数字化中心负责全省茶产业数字化及现货交易业务。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品中心 -->
+    <section class="section bg-light" id="product">
+        <div class="container">
+            <h2 class="section-title">产品中心</h2>
+            <div class="product-list">
+                <div class="product-item">
+<div class="tag">大宗现货 | 仓单交易 | 实物交收</div>
+                    <h3>黔绿茶</h3>
+                    <p>出产于贵州茶叶核心产区，高海拔云雾茶区，符合<span style="font-weight: bold;">水浸出物≥40%</span>标准，感官达“翡翠绿、嫩栗香、浓爽味”。</p>
+                    <p style="margin-top:15px; color:var(--main-green);">代表品种：都匀毛尖、湄潭翠芽、凤冈锌硒茶</p>
+                    <p style="margin-top:10px;">适用：机构交易、茶企采购、贸易流通、渠道批发</p>
+              </div>
+                <div class="product-item">
+<div class="tag">大宗现货 | 仓单交易 | 实物交收</div>
+                    <h3>黔红茶</h3>
+                    <p>贵州高原生态茶区出品，色泽红艳、香气馥郁、滋味醇厚，红茶黄酮类化合物含量高，兼具饮用与流通价值。</p>
+                    <p style="margin-top:15px; color:var(--main-green);">代表品种：遵义红（米兰世博会金奖）、普安红</p>
+                    <p style="margin-top:10px;">适用：机构交易、茶企采购、贸易流通、渠道批发</p>
+              </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 大宗现货招商 -->
+    <section class="section" id="invest">
+        <div class="container">
+            <h2 class="section-title">大宗现货交易招商</h2>
+            <div class="invest">
+                <div class="invest-item">
+                    <h3>招商合作对象（仅大宗 不做零售）</h3>
+                    <ul>
+                        <li>茶企、茶叶加工厂、茶产业供应链公司</li>
+                        <li>大宗商品交易机构、专业渠道服务商</li>
+                        <li>具备市场开发能力的产业团队与企业</li>
+                        <li>茶叶批发商、企业采购、大宗贸易渠道</li>
+                    </ul>
+                </div>
+                <div class="invest-item">
+                    <h3>核心合作模式</h3>
+                    <ul>
+                        <li>机构会员合作</li>
+                        <li>交易商入驻合作</li>
+                        <li>渠道服务商合作</li>
+                        <li>现货挂牌与代销</li>
+                        <li>区域运营合作</li>
+                        <li>供应链金融服务对接</li>
+                    </ul>
+                </div>
+                <div class="invest-item">
+                    <h3>合作支持政策</h3>
+                    <ul>
+                        <li>交易所官方平台授权与资质支持</li>
+                        <li>现货交易系统、行情、后台全流程支持</li>
+                        <li>标准化仓单、第三方质检、专业交收服务</li>
+                        <li>品牌物料、宣传资料、专业培训体系</li>
+                        <li>业务话术、运营指导、客户开发支持</li>
+                        <li>优厚交易佣金、渠道返佣政策</li>
+                    </ul>
+                </div>
+                <div class="invest-item">
+                    <h3>入驻合作流程</h3>
+                    <div class="invest-process">
+                        <div class="process-step">
+                            <div class="num">1</div>
+                            <p>提交申请</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="num">2</div>
+                            <p>资质审核</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="num">3</div>
+                            <p>签约备案</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="num">4</div>
+                            <p>开通权限</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="num">5</div>
+                            <p>运营赋能</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 合作单位 -->
+    <section class="section bg-light" id="partner">
+        <div class="container">
+            <h2 class="section-title">战略合作单位</h2>
+            <div class="partner-list">
+                <div class="partner-item">
+                    <h3>江西省联交运登记结算中心</h3>
+                    <p>省级地方金融服务机构，提供资金结算、清算核实、标的确权等服务，为交易保驾护航。</p>
+                </div>
+                <div class="partner-item">
+                    <h3>九江银行股份有限公司</h3>
+                    <p>香港联交所上市银行（06190.HK），负责交易资金存储与监管，保障资金安全流转。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section class="section" id="contact">
+        <div class="container">
+            <h2 class="section-title">联系我们</h2>
+            <div class="contact">
+                <div class="contact-info">
+                    <p>全国招商热线：<span style="color: var(--gold); font-weight: bold;">13556457842</span></p>
+                  <p>招商微信：<span style="color: var(--main-green); font-weight: bold;">ZcyCzy0813</span></p>
+<div class="qrcode-box">
+  <p>贵州茶数字化中心</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <div class="container">
+            <p>黔茶之涧 © 2025 贵州茶叶交易中心有限公司 版权所有 | 省内唯一茶资源类交易场所</p>
+            <p>本平台仅开展茶叶大宗现货交易，严格遵守国家相关法律法规，拒绝任何投机炒作</p>
+            <p class="copyright">资质依据：黔商发(2022)24号 | 黔商函2023343号</p>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
